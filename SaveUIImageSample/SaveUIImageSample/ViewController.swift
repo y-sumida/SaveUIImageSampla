@@ -35,7 +35,23 @@ extension ViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         self.imageView.image = image
+        self.saveImage(image: image)
         self.dismiss(animated: true, completion: nil)
+    }
+
+    private func saveImage(image: UIImage) {
+        if let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
+            let pngPath = documentDirectoryFileURL.appendingPathComponent("saved.png")
+            print(pngPath)
+            if let png = UIImagePNGRepresentation(image) {
+                try! png.write(to: pngPath)
+            }
+            let jpgPath = documentDirectoryFileURL.appendingPathComponent("saved.jpg")
+            print(jpgPath)
+            if let png = UIImageJPEGRepresentation(image, 0.75) {
+                try! png.write(to: jpgPath)
+            }
+        }
     }
 }
 
