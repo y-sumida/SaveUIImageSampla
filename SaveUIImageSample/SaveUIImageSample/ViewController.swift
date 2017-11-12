@@ -31,18 +31,31 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
 
     private func saveImage(image: UIImage) {
+        let resizeImage = resize(image: image)
         if let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
-            let pngPath = documentDirectoryFileURL.appendingPathComponent("saved.png")
-            print(pngPath)
+            let originalPath = documentDirectoryFileURL.appendingPathComponent("saved.png")
+            print(originalPath)
             if let png = UIImagePNGRepresentation(image) {
-                try! png.write(to: pngPath)
+                try! png.write(to: originalPath)
             }
-            let jpgPath = documentDirectoryFileURL.appendingPathComponent("saved.jpg")
-            print(jpgPath)
-            if let png = UIImageJPEGRepresentation(image, 0.75) {
-                try! png.write(to: jpgPath)
+            let resizePath = documentDirectoryFileURL.appendingPathComponent("resize.png")
+            print(resizePath)
+            if let png = UIImagePNGRepresentation(resizeImage) {
+                try! png.write(to: resizePath)
             }
         }
+    }
+
+    private func resize(image: UIImage) -> UIImage {
+        // 縦横の画素数を半分にする
+        let width = image.size.width * 0.5
+        let height = image.size.height * 0.5
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0.0)
+        image.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+        let resizeImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return resizeImage!
     }
 }
 
