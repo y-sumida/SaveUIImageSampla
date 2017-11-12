@@ -29,15 +29,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
             self.present(picker, animated: true, completion: nil)
         }
     }
-}
-
-extension ViewController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        self.imageView.image = image
-        self.saveImage(image: image)
-        self.dismiss(animated: true, completion: nil)
-    }
 
     private func saveImage(image: UIImage) {
         if let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
@@ -52,6 +43,15 @@ extension ViewController: UIImagePickerControllerDelegate {
                 try! png.write(to: jpgPath)
             }
         }
+    }
+}
+
+extension ViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        self.imageView.image = image
+        self.saveImage(image: image)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
