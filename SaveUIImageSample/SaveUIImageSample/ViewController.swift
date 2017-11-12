@@ -50,7 +50,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         // 縦横の画素数を半分にする
         let width = image.size.width * 0.5
         let height = image.size.height * 0.5
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0.0)
+        // scale の設定が0だとオリジナル画像よりもサイズが大きくなるので1を設定
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 1.0)
         image.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
         let resizeImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
